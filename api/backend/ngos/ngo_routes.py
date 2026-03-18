@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from backend.db_connection import db
+from backend.db_connection import get_db
 from mysql.connector import Error
 from flask import current_app
 
@@ -13,7 +13,7 @@ ngos = Blueprint("ngos", __name__)
 def get_all_ngos():
     try:
         current_app.logger.info('Starting get_all_ngos request')
-        cursor = db.get_db().cursor()
+        cursor = get_db().cursor(dictionary=True)
 
         # Note: Query parameters are added after the main part of the URL.
         # Here is an example:
@@ -59,7 +59,7 @@ def get_all_ngos():
 @ngos.route("/ngos/<int:ngo_id>", methods=["GET"])
 def get_ngo(ngo_id):
     try:
-        cursor = db.get_db().cursor()
+        cursor = get_db().cursor(dictionary=True)
 
         # Get NGO details
         cursor.execute("SELECT * FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
@@ -99,7 +99,7 @@ def create_ngo():
             if field not in data:
                 return jsonify({"error": f"Missing required field: {field}"}), 400
 
-        cursor = db.get_db().cursor()
+        cursor = get_db().cursor(dictionary=True)
 
         # Insert new NGO
         query = """
@@ -117,7 +117,7 @@ def create_ngo():
             ),
         )
 
-        db.get_db().commit()
+        get_db().commit()
         new_ngo_id = cursor.lastrowid
         cursor.close()
 
@@ -138,7 +138,7 @@ def update_ngo(ngo_id):
         data = request.get_json()
 
         # Check if NGO exists
-        cursor = db.get_db().cursor()
+        cursor = get_db().cursor(dictionary=True)
         cursor.execute("SELECT * FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
         if not cursor.fetchone():
             return jsonify({"error": "NGO not found"}), 404
@@ -160,7 +160,7 @@ def update_ngo(ngo_id):
         query = f"UPDATE WorldNGOs SET {', '.join(update_fields)} WHERE NGO_ID = %s"
 
         cursor.execute(query, params)
-        db.get_db().commit()
+        get_db().commit()
         cursor.close()
 
         return jsonify({"message": "NGO updated successfully"}), 200
@@ -173,7 +173,7 @@ def update_ngo(ngo_id):
 @ngos.route("/ngos/<int:ngo_id>/projects", methods=["GET"])
 def get_ngo_projects(ngo_id):
     try:
-        cursor = db.get_db().cursor()
+        cursor = get_db().cursor(dictionary=True)
 
         # Check if NGO exists
         cursor.execute("SELECT * FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
@@ -195,7 +195,7 @@ def get_ngo_projects(ngo_id):
 @ngos.route("/ngos/<int:ngo_id>/donors", methods=["GET"])
 def get_ngo_donors(ngo_id):
     try:
-        cursor = db.get_db().cursor()
+        cursor = get_db().cursor(dictionary=True)
 
         # Check if NGO exists
         cursor.execute("SELECT * FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
