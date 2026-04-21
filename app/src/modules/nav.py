@@ -1,94 +1,178 @@
-# Idea borrowed from https://github.com/fsmosca/sample-streamlit-authenticator
-
-# This file has functions to add links to the left sidebar based on the user's role.
+# CampusFlow sidebar navigation
 
 import streamlit as st
 
-
 # ---- General ----------------------------------------------------------------
+
 
 def home_nav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
 
 
 def about_page_nav():
-    st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
+    st.sidebar.page_link("pages/99_About.py", label="About", icon="🧠")
 
 
-# ---- Role: pol_strat_advisor ------------------------------------------------
+# ---- Role: student -----------------------------------------------------------
 
-def pol_strat_home_nav():
+
+def student_home_nav():
+    st.sidebar.page_link("pages/00_Student_Home.py", label="Student Home", icon="🎓")
+
+
+def student_crowd_nav():
+    st.sidebar.page_link("pages/01_Student_Crowd.py", label="Current Crowd", icon="📊")
+
+
+def student_hours_nav():
+    st.sidebar.page_link("pages/02_Student_Hours.py", label="Location Hours", icon="⏰")
+
+
+def student_predictions_nav():
     st.sidebar.page_link(
-        "pages/00_Pol_Strat_Home.py", label="Political Strategist Home", icon="👤"
+        "pages/03_Student_Predictions.py", label="Predictions", icon="📈"
     )
 
 
-def world_bank_viz_nav():
+def student_favorites_nav():
+    st.sidebar.page_link("pages/04_Student_Favorites.py", label="Favorites", icon="⭐")
+
+
+def student_preferences_nav():
     st.sidebar.page_link(
-        "pages/01_World_Bank_Viz.py", label="World Bank Visualization", icon="🏦"
+        "pages/05_Student_Preferences.py", label="Preferences", icon="⚙️"
     )
 
 
-def map_demo_nav():
-    st.sidebar.page_link("pages/02_Map_Demo.py", label="Map Demonstration", icon="🗺️")
+# ---- Role: operations manager ------------------------------------------------
 
 
-# ---- Role: usaid_worker -----------------------------------------------------
-
-def usaid_worker_home_nav():
+def ops_home_nav():
     st.sidebar.page_link(
-        "pages/10_USAID_Worker_Home.py", label="USAID Worker Home", icon="🏠"
+        "pages/10_Operations_Manager_Home.py", label="Operations Home", icon="🏢"
     )
 
 
-def ngo_directory_nav():
-    st.sidebar.page_link("pages/14_NGO_Directory.py", label="NGO Directory", icon="📁")
-
-
-def add_ngo_nav():
-    st.sidebar.page_link("pages/15_Add_NGO.py", label="Add New NGO", icon="➕")
-
-
-def prediction_nav():
+def ops_current_crowd_nav():
     st.sidebar.page_link(
-        "pages/11_Prediction.py", label="Regression Prediction", icon="📈"
+        "pages/11_Operations_Current_Crowd.py", label="Current Crowd", icon="📊"
     )
 
 
-def api_test_nav():
-    st.sidebar.page_link("pages/12_API_Test.py", label="Test the API", icon="🛜")
-
-
-def classification_nav():
+def ops_history_nav():
     st.sidebar.page_link(
-        "pages/13_Classification.py", label="Classification Demo", icon="🌺"
+        "pages/12_Operations_Crowd_History.py", label="Crowd History", icon="📉"
     )
 
 
-# ---- Role: administrator ----------------------------------------------------
+def ops_predictions_nav():
+    st.sidebar.page_link(
+        "pages/13_Operations_Predictions.py", label="Predictions", icon="📈"
+    )
+
+
+def ops_locations_nav():
+    st.sidebar.page_link(
+        "pages/14_Operations_Locations.py", label="Locations", icon="📍"
+    )
+
+
+def ops_hours_nav():
+    st.sidebar.page_link("pages/15_Operations_Hours.py", label="Edit Hours", icon="⏰")
+
+
+def ops_dashboards_nav():
+    st.sidebar.page_link(
+        "pages/16_Operations_Dashboards.py", label="Dashboards", icon="📋"
+    )
+
+
+# ---- Role: data analyst ------------------------------------------------------
+
+
+def analyst_home_nav():
+    st.sidebar.page_link(
+        "pages/20_Data_Analyst_Home.py", label="Analyst Home", icon="📊"
+    )
+
+
+def analyst_history_nav():
+    st.sidebar.page_link(
+        "pages/21_Analyst_Crowd_History.py", label="Crowd History", icon="📉"
+    )
+
+
+def analyst_predictions_nav():
+    st.sidebar.page_link(
+        "pages/22_Analyst_Predictions.py", label="Predictions", icon="📈"
+    )
+
+
+def analyst_locations_nav():
+    st.sidebar.page_link("pages/23_Analyst_Locations.py", label="Locations", icon="📍")
+
+
+def analyst_categories_nav():
+    st.sidebar.page_link(
+        "pages/24_Analyst_Data_Categories.py", label="Data Categories", icon="🗂️"
+    )
+
+
+def analyst_sources_nav():
+    st.sidebar.page_link(
+        "pages/25_Analyst_Data_Sources.py", label="Data Sources", icon="🔗"
+    )
+
+
+def analyst_dashboards_nav():
+    st.sidebar.page_link(
+        "pages/26_Analyst_Dashboards.py", label="Dashboards", icon="📋"
+    )
+
+
+# ---- Role: system administrator ---------------------------------------------
+
 
 def admin_home_nav():
-    st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
+    st.sidebar.page_link("pages/30_System_Admin_Home.py", label="Admin Home", icon="🖥️")
 
 
-def ml_model_mgmt_nav():
+def admin_pipeline_nav():
     st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
+        "pages/31_Admin_Pipeline_Runs.py", label="Pipeline Runs", icon="⚙️"
     )
 
 
-# ---- Sidebar assembly -------------------------------------------------------
+def admin_logs_nav():
+    st.sidebar.page_link(
+        "pages/32_Admin_System_Logs.py", label="System Logs", icon="📜"
+    )
+
+
+def admin_configs_nav():
+    st.sidebar.page_link("pages/33_Admin_System_Configs.py", label="Configs", icon="🛠️")
+
+
+def admin_cleanup_nav():
+    st.sidebar.page_link(
+        "pages/34_Admin_Cleanup_Logs.py", label="Cleanup Logs", icon="🧹"
+    )
+
+
+def admin_integrity_nav():
+    st.sidebar.page_link(
+        "pages/35_Admin_Data_Integrity.py", label="Data Integrity", icon="🔍"
+    )
+
+
+# ---- Sidebar assembly --------------------------------------------------------
+
 
 def SideBarLinks(show_home=False):
-    """
-    Renders sidebar navigation links based on the logged-in user's role.
-    The role is stored in st.session_state when the user logs in on Home.py.
-    """
+    """Render sidebar based on the authenticated user's role."""
 
-    # Logo appears at the top of the sidebar on every page
     st.sidebar.image("assets/logo.png", width=150)
 
-    # If no one is logged in, send them to the Home (login) page
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False
         st.switch_page("Home.py")
@@ -96,30 +180,46 @@ def SideBarLinks(show_home=False):
     if show_home:
         home_nav()
 
-    if st.session_state["authenticated"]:
+    if st.session_state.get("authenticated"):
+        role = st.session_state.get("role")
 
-        if st.session_state["role"] == "pol_strat_advisor":
-            pol_strat_home_nav()
-            world_bank_viz_nav()
-            map_demo_nav()
+        if role == "student":
+            student_home_nav()
+            student_crowd_nav()
+            student_hours_nav()
+            student_predictions_nav()
+            student_favorites_nav()
+            student_preferences_nav()
 
-        if st.session_state["role"] == "usaid_worker":
-            usaid_worker_home_nav()
-            ngo_directory_nav()
-            add_ngo_nav()
-            prediction_nav()
-            api_test_nav()
-            classification_nav()
+        elif role == "campus_operations_manager":
+            ops_home_nav()
+            ops_current_crowd_nav()
+            ops_history_nav()
+            ops_predictions_nav()
+            ops_locations_nav()
+            ops_hours_nav()
+            ops_dashboards_nav()
 
-        if st.session_state["role"] == "administrator":
+        elif role == "data_analyst":
+            analyst_home_nav()
+            analyst_history_nav()
+            analyst_predictions_nav()
+            analyst_locations_nav()
+            analyst_categories_nav()
+            analyst_sources_nav()
+            analyst_dashboards_nav()
+
+        elif role == "system_administrator":
             admin_home_nav()
-            ml_model_mgmt_nav()
+            admin_pipeline_nav()
+            admin_logs_nav()
+            admin_configs_nav()
+            admin_cleanup_nav()
+            admin_integrity_nav()
 
-    # About link appears at the bottom for all roles
     about_page_nav()
 
-    if st.session_state["authenticated"]:
+    if st.session_state.get("authenticated"):
         if st.sidebar.button("Logout"):
-            del st.session_state["role"]
-            del st.session_state["authenticated"]
+            st.session_state.clear()
             st.switch_page("Home.py")
