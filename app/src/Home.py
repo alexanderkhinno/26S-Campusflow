@@ -1,72 +1,139 @@
 ##################################################
-# This is the main/entry-point file for the
-# sample application for your project
+# CampusFlow main landing / mock login page
 ##################################################
 
-# Set up basic logging infrastructure
 import logging
-logging.basicConfig(format='%(filename)s:%(lineno)s:%(levelname)s -- %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-# import the main streamlit library as well
-# as SideBarLinks function from src/modules folder
 import streamlit as st
 from modules.nav import SideBarLinks
 
-# streamlit supports regular and wide layout (how the controls
-# are organized/displayed on the screen).
-st.set_page_config(layout='wide')
+logging.basicConfig(
+    format="%(filename)s:%(lineno)s:%(levelname)s -- %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
-# If a user is at this page, we assume they are not
-# authenticated.  So we change the 'authenticated' value
-# in the streamlit session_state to false.
-st.session_state['authenticated'] = False
+st.set_page_config(page_title="CampusFlow", page_icon="🏫", layout="wide")
 
-# Use the SideBarLinks function from src/modules/nav.py to control
-# the links displayed on the left-side panel.
-# IMPORTANT: ensure src/.streamlit/config.toml sets
-# showSidebarNavigation = false in the [client] section
+# Visiting Home means user is logged out until they choose a persona/user
+st.session_state["authenticated"] = False
+
 SideBarLinks(show_home=True)
 
-# ***************************************************
-#    The major content of this page
-# ***************************************************
 
-logger.info("Loading the Home page of the app")
-st.title('CS 3200 Project Template')
-st.write('#### Hi! As which user would you like to log in?')
+# --------------------------------------------------
+# Mock users by persona
+# --------------------------------------------------
+PERSONA_OPTIONS = {
+    "student": {
+        "label": "Student",
+        "title": "Sarah Johnson",
+        "description": "Check crowd levels, hours, predictions, favorites, and preferences.",
+        "users": [
+            {"user_id": 1, "name": "Sarah Johnson"},
+            {"user_id": 5, "name": "Roy Smith"},
+            {"user_id": 7, "name": "Sheryl Howard"},
+            {"user_id": 8, "name": "Brandi Hansen"},
+            {"user_id": 9, "name": "Nicole Navarro"},
+        ],
+        "home_page": "pages/00_Student_Home.py",
+    },
+    "campus_operations_manager": {
+        "label": "Campus Operations Manager",
+        "title": "Mark Preston",
+        "description": "Monitor facilities, compare locations, edit hours, and review dashboards.",
+        "users": [
+            {"user_id": 2, "name": "Mark Preston"},
+            {"user_id": 6, "name": "Melissa Daniels"},
+            {"user_id": 22, "name": "Lisa Gonzalez"},
+            {"user_id": 23, "name": "Kenneth Jacobs"},
+            {"user_id": 24, "name": "Anna Ford"},
+        ],
+        "home_page": "pages/10_Operations_Manager_Home.py",
+    },
+    "data_analyst": {
+        "label": "Data Analyst",
+        "title": "Jason Morrison",
+        "description": "Explore historical and predicted data, dashboards, categories, and sources.",
+        "users": [
+            {"user_id": 3, "name": "Jason Morrison"},
+            {"user_id": 12, "name": "Erin Gonzalez"},
+            {"user_id": 21, "name": "Patricia Church"},
+            {"user_id": 34, "name": "Spencer Wade"},
+            {"user_id": 37, "name": "Courtney Jenkins"},
+        ],
+        "home_page": "pages/20_Data_Analyst_Home.py",
+    },
+    "system_administrator": {
+        "label": "System Administrator",
+        "title": "Kevin Brooks",
+        "description": "Track pipeline runs, inspect logs, and manage system configuration.",
+        "users": [
+            {"user_id": 4, "name": "Kevin Brooks"},
+            {"user_id": 11, "name": "Fred Johnson"},
+            {"user_id": 15, "name": "Jerry Harris"},
+        ],
+        "home_page": "pages/30_System_Admin_Home.py",
+    },
+}
 
-# For each of the user personas for which we are implementing
-# functionality, we put a button on the screen that the user
-# can click to MIMIC logging in as that mock user.
 
-if st.button("Act as John, a Political Strategy Advisor",
-             type='primary',
-             use_container_width=True):
-    # when user clicks the button, they are now considered authenticated
-    st.session_state['authenticated'] = True
-    # we set the role of the current user
-    st.session_state['role'] = 'pol_strat_advisor'
-    # we add the first name of the user (so it can be displayed on
-    # subsequent pages).
-    st.session_state['first_name'] = 'John'
-    # finally, we ask streamlit to switch to another page, in this case, the
-    # landing page for this particular user type
-    logger.info("Logging in as Political Strategy Advisor Persona")
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+# --------------------------------------------------
+# Page content
+# --------------------------------------------------
+logger.info("Loading CampusFlow Home page")
 
-if st.button('Act as Mohammad, a USAID Worker',
-             type='primary',
-             use_container_width=True):
-    st.session_state['authenticated'] = True
-    st.session_state['role'] = 'usaid_worker'
-    st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/10_USAID_Worker_Home.py')
+st.title("CampusFlow")
+st.write("### Select a persona and mock user to log in")
+st.write(
+    "Choose one of the project personas below. Each dropdown is populated "
+    "with mock users from that role, and the button simulates logging in."
+)
 
-if st.button('Act as System Administrator',
-             type='primary',
-             use_container_width=True):
-    st.session_state['authenticated'] = True
-    st.session_state['role'] = 'administrator'
-    st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/20_Admin_Home.py')
+col1, col2 = st.columns(2)
+
+persona_items = list(PERSONA_OPTIONS.items())
+column_cycle = [col1, col2, col1, col2]
+
+for (role_key, config), col in zip(persona_items, column_cycle):
+    with col:
+        st.subheader(config["label"])
+        st.caption(config["description"])
+
+        display_options = {
+            f"{user['name']} (User ID: {user['user_id']})": user
+            for user in config["users"]
+        }
+
+        selected_label = st.selectbox(
+            f"Choose a {config['label']} user",
+            options=list(display_options.keys()),
+            key=f"select_{role_key}",
+        )
+
+        selected_user = display_options[selected_label]
+        first_name = selected_user["name"].split()[0]
+
+        if st.button(
+            f"Log in as {first_name}",
+            type="primary",
+            use_container_width=True,
+            key=f"login_{role_key}",
+        ):
+            st.session_state["authenticated"] = True
+            st.session_state["role"] = role_key
+            st.session_state["user_id"] = selected_user["user_id"]
+            st.session_state["first_name"] = first_name
+            st.session_state["full_name"] = selected_user["name"]
+
+            logger.info(
+                "Mock login as %s (user_id=%s, role=%s)",
+                selected_user["name"],
+                selected_user["user_id"],
+                role_key,
+            )
+            st.switch_page(config["home_page"])
+
+st.divider()
+st.info(
+    "This project uses mock login only. No password or account creation is required."
+)
